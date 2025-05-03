@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@fontsource/cairo": "^5.1.0",
+    "sortablejs": "^1.15.3"
+  }
+}

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <title>دفعتنا</title>
+    <link rel="icon" href="assets/image/graduation-cap-solid.svg" type="image/svg">
+    <link rel="stylesheet" href="libs/sweetalert2.min.css">
+    <link rel="stylesheet" href="libs/animate.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="assets/CSS/style.css">
+
+</head>
+
+<body>
+    <!-- ============ Loading ============ -->
+    <div id="loading-screen" class="animate__animated animate__fadeIn">
+        <div class="logo-container">
+            <div class="loading-circle"></div> <!-- الدائرة المتحركة -->
+            <i class="fas fa-graduation-cap" style="font-size: 50px;"></i>
+        </div><br>
+        <h1>جارٍ التحميل...</h1> <!-- النص تحت الأيقونة -->
+    </div>
+
+    <!-- ============ Bottom Navbar ============ -->
+    <div class="bottom-nav animate__animated animate__fadeInUp" id="bottom-nav">
+        <a href="#home" class="nav-item" onclick="navigateTo('home')">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="#lectures" class="nav-item" onclick="navigateTo('lectures')">
+            <i class="fa-solid fa-file-pdf"></i>
+        </a>
+        <a href="#videos" class="nav-item" onclick="navigateTo('videos')">
+            <i class="fa-solid fa-video"></i>
+        </a>
+        <a href="#settings" class="nav-item" onclick="navigateTo('settings')">
+            <i class="fas fa-cog"></i>
+        </a>
+
+    </div>
+
+    <!-- ============ الرئيسية ============ -->
+    <div id="home" class="page" style="display: none;">
+        <div class="header animate__animated animate__fadeInDown">
+            <h2><i class="fas fa-graduation-cap"></i> تطبيق دفعتنا</h2>
+            <p class="subtitle">كل ما تحتاجه في مكان واحد</p>
+        </div>
+
+        <div class="grid-container">
+            <div class="grid-item animate__animated animate__pulse" data-page="lectures"
+                onclick="navigateTo('lectures')">
+                <div class="icon-box purple animate__animated animate__zoomIn">
+                    <i class="fa-solid fa-file-pdf"></i>
+                </div>
+                <span>المحاضرات</span>
+            </div>
+
+            <div class="grid-item animate__animated animate__pulse" data-page="schedule"
+                onclick="navigateTo('schedule')">
+                <div class="icon-box blue animate__animated animate__zoomIn">
+                    <i class="fa-solid fa-table-list"></i>
+                </div>
+                <span>الجدول</span>
+            </div>
+
+            <div class="grid-item animate__animated animate__pulse" data-page="videos" onclick="navigateTo('videos')">
+                <div class="icon-box red animate__animated animate__zoomIn">
+                    <i class="fa-solid fa-video"></i>
+                </div>
+                <span>الفيديوهات</span>
+            </div>
+
+            <div class="grid-item animate__animated animate__pulse" data-page="links" onclick="navigateTo('links')">
+                <div class="icon-box green animate__animated animate__zoomIn">
+                    <i class="fas fa-link"></i>
+                </div>
+                <span>روابط مهمة</span>
+            </div>
+
+            <div class="grid-item animate__animated animate__pulse" data-page="buildings"
+                onclick="navigateTo('buildings')">
+                <div class="icon-box orange animate__animated animate__zoomIn">
+                    <i class="fas fa-building"></i>
+                </div>
+                <span>المباني</span>
+            </div>
+
+            <div class="grid-item animate__animated animate__pulse" data-page="settings"
+                onclick="navigateTo('settings')">
+                <div class="icon-box gray animate__animated animate__zoomIn">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <span>الإعدادات</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ المحاضرات ============ -->
+    <div id="lectures" class="page">
+        <div class="page-header">
+            <button class="back-btn" onclick="backToHome()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h2>المحاضرات</h2>
+        </div>
+
+        <!-- Offline Message -->
+        <div id="offline-container-lec" class="offline-container-lec">
+            <div id="offline-message-lec" class="offline-message-lec">
+                <i class="fas fa-wifi-slash"></i>
+                <span>عفواً، لا يوجد اتصال بالإنترنت. تأكد من الاتصال وأعد فتح التطبيق.</span>
+            </div>
+            <img src="assets/image/No connection-bro.svg" alt="No Connection" class="offline-image-lec">
+        </div>
+
+        <!-- رسالة التحميل -->
+        <div id="loading-message-container" class="loading-message-container">
+            <p>جاري تحميل المواد... من فضلك انتظر.</p>
+        </div>
+
+        <div id="subjects-list" class="subjects-list" style="text-align: center; margin: auto;">
+            <p>جاري تحميل البيانات...</p>
+
+        </div>
+    </div>
+
+    <!-- ============ الجداول ============ -->
+    <div id="schedule" class="page">
+        <div class="page-header">
+            <button class="back-btn" onclick="backToHome()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h2>الجداول</h2>
+        </div>
+
+
+
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown()">
+                اختر نوع الدراسة <i class="fas fa-chevron-down dropdown-icon"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#" id="hide-all-option" onclick="hideAllImages()" style="display: none;">اغلاق الكل</a>
+                <a href="#" onclick="showImages('regular')">انتظام</a>
+                <a href="#" onclick="showImages('affiliate')">انتساب</a>
+            </div>
+        </div>
+
+
+        <!-- الصور الخاصة بانتظام -->
+        <div id="regular-images" class="image-gallery" style="display: none;">
+            <img src="assets/image/1 2.jpg" alt="صورة انتظام 1">
+            <img src="assets/image/3 4.jpg" alt="صورة انتظام 2">
+            <img src="assets/image/5 6.jpg" alt="صورة انتظام 3">
+        </div>
+
+        <!-- الصور الخاصة بانتساب -->
+        <div id="affiliate-images" class="image-gallery" style="display: none;">
+            <img src="assets/image/b 1 2.jpg" alt="صورة انتساب 1">
+            <img src="assets/image/b 3 4.jpg" alt="صورة انتساب 2">
+            <img src="assets/image/b 5 6.jpg" alt="صورة انتساب 3">
+            <img src="assets/image/b 7 8.jpg" alt="صورة انتساب 4">
+            <img src="assets/image/b 9 10.jpg" alt="صورة انتساب 5">
+            <img src="assets/image/b 11 12.jpg" alt="صورة انتساب 6">
+            <img src="assets/image/b 13.jpg" alt="صورة انتساب 7">
+        </div>
+    </div>
+
+    <!-- ============ الفيديوهات ============ -->
+    <div id="videos" class="page" style="display: none;">
+        <div class="page-header">
+            <button class="back-btn" onclick="navigateToPage('home')">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h2>الفيديوهات</h2>
+        </div>
+
+        <!-- Offline Message -->
+        <div id="offline-container" class="offline-container">
+            <div id="offline-message" class="offline-message">
+                <i class="fas fa-wifi-slash"></i>
+                <span>عفواً، لا يوجد اتصال بالإنترنت. تأكد من الاتصال وأعد فتح التطبيق.</span>
+            </div>
+            <img src="assets/image/No connection-bro.svg" alt="No Connection" class="offline-image">
+        </div>
+
+
+        <div id="loading-overlay" class="loading-overlay">
+            <div id="custom-loading-screen">
+                <div class="logo_container">
+                    <div class="spinner"></div>
+                    <i class="fas fa-graduation-cap logo-icon"></i>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container playlist-container">
+
+            <!-- أزرار التحكم -->
+            <div class="text-center mb-4">
+                <button id="prev-video" class="btn btn-outline-secondary me-2" disabled>السابق</button>
+                <button id="next-video" class="btn btn-outline-secondary" disabled>التالي</button>
+            </div>
+
+            <div class="mb-4 text-center">
+                <select id="playlist-selector" class="form-select w-50 mx-auto">
+                    <option value="" selected>اختار المادة</option>
+                </select>
+            </div>
+
+            <!-- الفيديو الأساسي -->
+            <div id="main-video" class="video-player">
+                <p id="default-message">يرجى اختيار قائمة تشغيل لعرض الفيديوهات</p>
+                <iframe id="main-player" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+
+            <!-- قائمة الفيديوهات -->
+            <div id="video-thumbnails" class="video-list">
+                <!-- سيتم إدراج الفيديوهات هنا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ الروابط ============ -->
+    <div id="links" class="page">
+        <div class="page-header">
+            <button class="back-btn" onclick="backToHome()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h2>روابط مهمة</h2>
+        </div>
+        <div class="links-container">
+            <div class="link-item">
+                <a href="https://umis.alexu.edu.eg/umisapp/Registration/ED_Login.aspx">
+                    <i class="fas fa-thumbtack pin-icon"></i>
+                    <i class="fas fa-envelope"></i>
+                    <span>البريد الجامعي</span>
+                </a>
+            </div>
+            <div class="link-item">
+                <a
+                    href="http://www.comm.alexu.edu.eg/?fbclid=IwZXh0bgNhZW0CMTAAAR0U5GFj4x-b83Cs-ik7Ex8LyFK2S-WjwWllOQ14gSXPouM-QzL9Bhp5z5w_aem_KMaFQLiFnzCY08nYK5aLqQ">
+                    <i class="fas fa-thumbtack pin-icon"></i>
+                    <i class="fas fa-globe"></i>
+                    <span>موقع كلية الاعمال</span>
+                </a>
+            </div>
+            <div class="link-item">
+                <a href="http://www.comm.alexu.edu.eg/111.Html">
+                    <i class="fas fa-thumbtack pin-icon"></i>
+                    <i class="fas fa-book"></i>
+                    <span>المقرر اولى انتظام (1)</span>
+                </a>
+            </div>
+            <div class="link-item">
+                <a href="http://www.comm.alexu.edu.eg/112.Html">
+                    <i class="fas fa-thumbtack pin-icon"></i>
+                    <i class="fas fa-book"></i>
+                    <span>المقرر اولى انتساب (1)</span>
+                </a>
+            </div>
+            <div class="link-item">
+                <a href="http://www.comm.alexu.edu.eg/113.Html">
+                    <i class="fas fa-thumbtack pin-icon"></i>
+                    <i class="fas fa-book"></i>
+                    <span>المقرر اولى انجليزي (1)</span>
+                </a>
+            </div>
+            <div class="link-item">
+                <a href="http://www.comm.alexu.edu.eg/121.Html">
+                    <i class="fas fa-thumbtack pin-icon"></i>
+                    <i class="fas fa-book"></i>
+                    <span>المقرر اولى انتظام (2)</span>
+                </a>
+            </div>
+            <div class="link-item">
+                <a href="http://www.comm.alexu.edu.eg/122.Html">
+                    <i class="fas fa-thumbtack pin-icon"></i>
+                    <i class="fas fa-book"></i>
+                    <span>المقرر اولى انتساب (2)</span>
+                </a>
+            </div>
+            <div class="link-item">
+                <a href="http://www.comm.alexu.edu.eg/123.Html">
+                    <i class="fas fa-thumbtack pin-icon"></i>
+                    <i class="fas fa-book"></i>
+                    <span>المقرر اولى انجليزي (2)</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============ المباني ============ -->
+    <div id="buildings" class="page">
+        <div class="page-header">
+            <button class="back-btn" onclick="backToHome()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h2>المباني</h2>
+        </div>
+        <h2 class="title">مبنى تجارة عربي</h2>
+
+        <table class="building-table">
+            <thead>
+                <tr>
+                    <th>الدور الأرضي</th>
+                    <th>الدور الرابع</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>مدرج <span class="accent-letter">ج</span></td>
+                    <td>مدرج <span class="accent-letter">د</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <h2 class="title">مبنى الدكتور أحمد نور</h2>
+
+        <table class="building-table">
+            <thead>
+                <tr>
+                    <th>الدور الأول</th>
+                    <th>الدور الثاني</th>
+                    <th>الدور الثالث</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>حجرة <span class="accent-letter">202</span></td>
+                    <td>مدرج <span class="accent-letter">1</span></td>
+                    <td>حجرة <span class="accent-letter">401</span></td>
+                </tr>
+                <tr>
+                    <td>حجرة <span class="accent-letter">203</span></td>
+                    <td>حجرة <span class="accent-letter">301</span></td>
+                    <td>حجرة <span class="accent-letter">402</span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>حجرة <span class="accent-letter">302</span></td>
+                    <td>حجرة <span class="accent-letter">403</span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>حجرة <span class="accent-letter">303</span></td>
+                    <td>حجرة <span class="accent-letter">404</span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>حجرة <span class="accent-letter">406</span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>حجرة <span class="accent-letter">407</span></td>
+                </tr>
+            </tbody>
+
+            <thead>
+                <tr>
+                    <th>الدور الرابع</th>
+                    <th>الدور الخامس</th>
+                    <th>الدور السادس</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>مدرج <span class="accent-letter">2</span></td>
+                    <td>مدرج <span class="accent-letter">4</span></td>
+                    <td>حجرة <span class="accent-letter">703</span></td>
+                </tr>
+                <tr>
+                    <td>مدرج <span class="accent-letter">3</span></td>
+                    <td>حجرة <span class="accent-letter">603</span></td>
+                    <td>حجرة <span class="accent-letter">704</span></td>
+                </tr>
+                <tr>
+                    <td>حجرة <span class="accent-letter">501</span></td>
+                    <td>حجرة <span class="accent-letter">604</span></td>
+                    <td>حجرة <span class="accent-letter">705</span></td>
+                </tr>
+                <tr>
+                    <td>حجرة <span class="accent-letter">502</span></td>
+                    <td>حجرة <span class="accent-letter">605</span></td>
+                    <td>حجرة <span class="accent-letter">707</span></td>
+                </tr>
+                <tr>
+                    <td>حجرة <span class="accent-letter">503</span></td>
+                    <td>حجرة <span class="accent-letter">606</span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>حجرة <span class="accent-letter">504</span></td>
+                    <td>حجرة <span class="accent-letter">607</span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>حجرة <span class="accent-letter">506</span></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>حجرة <span class="accent-letter">507</span></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+
+        <h2 class="title">مبنى السكاشن</h2>
+
+        <table class="building-table">
+            <thead>
+                <tr>
+                    <th>الدور الأرضي</th>
+                    <th>الدور الأول</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>مدرج <span class="accent-letter">5</span></td>
+                    <td>حجرة <span class="accent-letter">9</span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>حجرة <span class="accent-letter">10</span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>حجرة <span class="accent-letter">11</span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>حجرة <span class="accent-letter">12</span></td>
+                </tr>
+            </tbody>
+
+            <thead>
+                <tr>
+                    <th>الدور الثاني</th>
+                    <th>الدور الثالث</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>حجرة <span class="accent-letter">90</span></td>
+                    <td>حجرة <span class="accent-letter">94</span></td>
+                </tr>
+                <tr>
+                    <td>حجرة <span class="accent-letter">91</span></td>
+                    <td>حجرة <span class="accent-letter">95</span></td>
+                </tr>
+                <tr>
+                    <td>حجرة <span class="accent-letter">92</span></td>
+                    <td>حجرة <span class="accent-letter">96</span></td>
+                </tr>
+                <tr>
+                    <td>حجرة <span class="accent-letter">93</span></td>
+                    <td>حجرة <span class="accent-letter">97</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+    <!-- ============ الإعدادات ============ -->
+    <div id="settings" class="page">
+        <div class="page-header">
+            <button class="back-btn" onclick="backToHome()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h2>الإعدادات</h2>
+        </div>
+
+        <div class="settings-container">
+            <!-- المظهر -->
+            <div class="settings-section">
+                <h3>المظهر</h3>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <i class="fas fa-moon"></i>
+                        <span>الوضع الليلي</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <i class="fas fa-bars"></i>
+                        <span>شريط التنقل السفلي</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="bottomNavToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <i class="fas fa-palette"></i>
+                        <span>اللون الرئيسي</span>
+                    </div>
+                    <div class="color-options">
+                        <span class="color-circle" data-color="#4A90E2"></span>
+                        <span class="color-circle" data-color="#ffae00"></span>
+                        <span class="color-circle" data-color="#4CAF50"></span>
+                        <span class="color-circle add-color">
+                            <i class="fas fa-plus"></i>
+                            <input type="color" id="customColorPicker" style="display: none;">
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الإشعارات -->
+            <div class="settings-section" hidden>
+                <h3>الإشعارات</h3>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <i class="fas fa-bell"></i>
+                        <span>إشعارات المحاضرات</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="lectureNotifications">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <i class="fas fa-newspaper"></i>
+                        <span>إشعارات الأخبار</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="newsNotifications">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- التخصيص -->
+            <div class="settings-section">
+                <h3>التخصيص</h3>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <i class="fas fa-language"></i>
+                        <span>اللغة</span>
+                    </div>
+                    <select id="languageSelect" class="settings-select">
+                        <option value="ar">العربية</option>
+                    </select>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <i class="fas fa-font"></i>
+                        <span>حجم الخط</span>
+                    </div>
+                    <select id="fontSizeSelect" class="settings-select">
+                        <option value="0.8">صغير</option>
+                        <option value="1" selected>متوسط</option>
+                        <option value="1.2">كبير</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- معلومات التطبيق -->
+            <div class="settings-section">
+                <h3>حول التطبيق</h3>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span>إصدار التطبيق</span>
+                    </div>
+                    <span class="version-number">1.0.0</span>
+                </div>
+            </div>
+
+            <!-- زر حذف البيانات -->
+            <div class="danger-zone">
+                <button class="delete-data-btn">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    اعادة تعين الاعدادات
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ============ تحميل السكربتات ============ -->
+    <script src="libs/sweetalert2.all.min.js"></script>
+    <script src="assets/JS/script.js"></script>
+    <script src="assets/JS/update.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
